@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <title>Пользователи</title>
+</head>
+<body>
+<h2>Список пользователей библиотеки</h2>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Имя</th>
+        <th>Фамилия</th>
+        <th>Отчество</th>
+        <th>Год рождения</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="appUser : ${users}">
+        <td><a th:href="@{|/users/${appUser.id}|}" th:text="${appUser.id}"></a></td>
+        <td th:text="${appUser.firstName}"></td>
+        <td th:text="${appUser.lastName}"></td>
+        <td th:text="${appUser.patronymic}"></td>
+        <td th:text="${appUser.birthYear}"></td>
+    </tr>
+    <hr/>
+    </tbody>
+</table>
+<hr/>
+<a th:href="@{/people/new}">
+    <button>Добавить пользователя</button>
+</a>
+</body>
+</html>
+
