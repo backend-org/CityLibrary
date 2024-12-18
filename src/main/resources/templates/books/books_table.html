@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <title>Книги</title>
+</head>
+<body>
+<h2>Список книг</h2>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>Автор</th>
+        <th>Год печати</th>
+        <th>Id держателя</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books}">
+        <td th:text="${book.id}"></td>
+        <td th:text="${book.title}"></td>
+        <td th:text="${book.author}"></td>
+        <td th:text="${book.year}"></td>
+        <td th:text="${book.userId}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
+

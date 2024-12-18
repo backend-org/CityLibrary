@@ -25,16 +25,16 @@ public class AppUser {
     @Setter(AccessLevel.PRIVATE)
     private Long id;
 
-    @Column(name = "firstname")
+    @Column(name = "firstname", nullable = false)
     private String firstName;
 
-    @Column(name = "lastname")
+    @Column(name = "lastname", nullable = false)
     private String lastName;
 
     @Column(name = "patronymic")
     private String patronymic;
 
-    @Column(name = "birthYear")
+    @Column(name = "birthYear", nullable = false)
     private Integer birthYear;
 
     public AppUser(String firstName, String lastName, String patronymic, int birthYear) {
