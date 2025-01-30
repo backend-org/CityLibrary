@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit book</title>
+</head>
+<body>
+
+<h1>Информация о книге</h1>
+
+<!-- Проверка на наличие объекта Book -->
+<div th:if="${book != null}">
+    <p><strong>Book ID:</strong> <span th:text="${book.id}">ID</span></p>
+    <p><strong>Название:</strong> <span th:text="${book.title}">Title</span></p>
+    <p><strong>Автор:</strong> <span th:text="${book.author}">Author</span></p>
+    <p><strong>Год публикации:</strong> <span th:text="${book.year}">Year</span></p>
+</div>
+
+<div th:if="${appUser != null}">
+    <p><strong>Книга сейчас у:</strong> <span th:text="${appUser.lastName} + ' ' + ${appUser.firstName}  + ' ' + ${appUser.patronymic}"></span></p>
+</div>
+
+<div th:if="${appUser == null}">
+    <p><strong>Книга сейчас ни за кем не закреплена:</strong></p>
+</div>
+
+<!-- Сообщение, если объект Book отсутствует -->
+<div th:if="${book == null}">
+    <p>No book details available.</p>
+</div>
+
+<a th:href="@{/books/{id}/edit(id=${book.id})}">
+    <button>Редактировать</button>
+</a>
+</body>
+</html>

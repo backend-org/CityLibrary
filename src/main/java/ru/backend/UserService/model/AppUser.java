@@ -22,8 +22,7 @@ public class AppUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.PRIVATE)
-    private Long id;
+    private Integer id;
 
     @Column(name = "firstname", nullable = false)
     private String firstName;

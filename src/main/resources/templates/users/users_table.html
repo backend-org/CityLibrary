@@ -17,7 +17,7 @@
     </thead>
     <tbody>
     <tr th:each="appUser : ${users}">
-        <td><a th:href="@{|/users/${appUser.id}|}" th:text="${appUser.id}"></a></td>
+        <td><a th:href="@{|/people/${appUser.id}|}" th:text="${appUser.id}"></a></td>
         <td th:text="${appUser.firstName}"></td>
         <td th:text="${appUser.lastName}"></td>
         <td th:text="${appUser.patronymic}"></td>

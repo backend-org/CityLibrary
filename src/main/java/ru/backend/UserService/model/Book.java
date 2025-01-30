@@ -15,19 +15,18 @@ public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.PRIVATE)
-    private Long id;
+    private Integer id;
 
     @Column(name = "title", nullable = false)
     private String title;
 
     @Column(name = "author")
-    private String Author;
+    private String author;
 
     @Column(name = "year")
     private Integer year;
 
     @Column(name = "user_id")
-    private Long userId;
+    private Integer userId;
 
 }

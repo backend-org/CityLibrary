@@ -6,6 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.backend.UserService.model.Book;
 import ru.backend.UserService.services.book.BookService;
+import ru.backend.UserService.services.user.UserService;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("books")
@@ -13,6 +16,8 @@ public class BookController {
 
     @Autowired
     BookService bookService;
+    @Autowired
+    UserService userService;
 
     @GetMapping()
     public String getAllBooks(Model model) {
@@ -28,28 +33,40 @@ public class BookController {
 //    }
 //
     @GetMapping("/new")
-    public String addUserForm(Model model) {
+    public String addBookForm(Model model) {
         model.addAttribute("book", new Book());
-        return "books/books_table";
+        return "books/add_book_form";
     }
 //
-//    @PostMapping
-//    public String addUser(@ModelAttribute("appUser") AppUser appUser) {
-//        userService.add(appUser);
-//        return "redirect:/people";
-//    }
-//
-//    @GetMapping("/{id}/edit")
-//    public String editUserForm(Model model, @PathVariable("id") int id){
-//        model.addAttribute("appUser", userService.getUserById(id));
-//        return "users/edit_user";
-//    }
-//
-//    @PatchMapping("/{id}")
-//    public String editUser(@ModelAttribute("appUser") AppUser appUser){
-//        userService.edit(appUser);
-//        return "redirect:/people";
-//    }
+    @PostMapping
+    public String addBook(@ModelAttribute("book") Book book) {
+        bookService.add(book);
+        return "redirect:/books";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String editBookForm(Model model, @PathVariable("id") int id){
+        model.addAttribute("book", bookService.getBookById(id));
+        return "books/edit_book";
+    }
+
+    @PatchMapping("/{id}")
+    public String editBook(@ModelAttribute("book") Book book) {
+        bookService.edit(book);
+        return "redirect:/books";
+    }
+
+    @GetMapping("/{id}")
+    public String getBookInfo(Model model, @PathVariable int id){
+        var book = bookService.getBookById(id);
+        var userId = book.getUserId();
+        if(userId != null){
+            var user = userService.getUserById(userId);
+            model.addAttribute("appUser", user);
+        }
+        model.addAttribute("book", book);
+        return "books/book_page";
+    }
 ////
 ////    @DeleteMapping("/{id}")
 ////    public String deleteUser(@PathVariable("id") int id){

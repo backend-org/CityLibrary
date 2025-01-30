@@ -5,7 +5,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.backend.UserService.model.AppUser;
+import ru.backend.UserService.model.Book;
+import ru.backend.UserService.services.book.BookService;
 import ru.backend.UserService.services.user.UserService;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("people")
@@ -13,6 +17,8 @@ public class UserController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    BookService bookService;
 
     @GetMapping()
     public String getAllUsers(Model model) {
@@ -20,13 +26,15 @@ public class UserController {
         return "users/users_table";
     }
 
-//    @GetMapping("/{id}")
-//    public String getUserById(@PathVariable("id") int id, Model model) {
-//        AppUser appUser = userService.getUserById(id);
-//        model.addAttribute("user", appUser);
-//        return "users/user_page";
-//    }
-//
+    @GetMapping("/{id}")
+    public String getUserById(@PathVariable("id") int id, Model model) {
+        AppUser appUser = userService.getUserById(id);
+        List<Book> userBooks = bookService.getBooksByUserId(appUser.getId());
+        model.addAttribute("appUser", appUser);
+        model.addAttribute("books", userBooks);
+        return "users/user_page";
+    }
+
     @GetMapping("/new")
     public String addUserForm(Model model) {
         model.addAttribute("appUser", new AppUser());

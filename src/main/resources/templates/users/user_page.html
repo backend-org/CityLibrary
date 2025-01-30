@@ -1,13 +1,33 @@
 <!DOCTYPE html>
     <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>User</title>
+    <title>Пользователь</title>
 </head>
 <body>
-    <p th:text="${appUser.getFirstName()}">Val</p>
-    <p th:text="${appUser.getLastName()}">Val</p>
-    <p th:text="${appUser.getEmail()}">Val</p>
-    <p th:text="${appUser.getAddress()}">Val</p>
+
+<h1>Страница пользователя</h1>
+
+<!-- Проверка на наличие объекта appUser -->
+<div th:if="${appUser != null}">
+    <p><strong>UserID:</strong> <span th:text="${appUser.id}">ID</span></p>
+    <p><strong>ФИО:</strong> <span th:text="${appUser.firstName} + ' ' + ${appUser.lastName} + ' ' + ${appUser.patronymic}"></span></p>
+    <p><strong>Год рождения:</strong> <span th:text="${appUser.birthYear}">Year</span></p>
+</div>
+
+<div th:if="${appUser == null}">
+    <p><strong>Пользователя с таким id не обнаружено</strong></p>
+</div>
+
+<hr/>
+
+<h2>Книги в пользовании</h2>
+
+<div th:each="book : ${books}">
+    <p><span th:text="${book.title} + ' | ' + ${book.author} + ' | ' + ${book.year}"></span></p>
+</div>
+
+<hr/>
+
 </body>
 </html>
 

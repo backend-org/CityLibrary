@@ -1,6 +1,7 @@
 package ru.backend.UserService.services.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.backend.UserService.model.AppUser;
@@ -24,7 +25,7 @@ public class UserServiceImp implements UserService {
     @Transactional(readOnly = true)
     @Override
     public List<AppUser> listUsers() {
-        return userRepository.findAll();
+        return userRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
     @Transactional(readOnly = true)
