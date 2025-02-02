@@ -14,6 +14,10 @@
     <p><strong>Год рождения:</strong> <span th:text="${appUser.birthYear}">Year</span></p>
 </div>
 
+<a th:href="@{/people/{id}/edit(id=${appUser.id})}">
+    <button>Редактировать</button>
+</a>
+
 <div th:if="${appUser == null}">
     <p><strong>Пользователя с таким id не обнаружено</strong></p>
 </div>

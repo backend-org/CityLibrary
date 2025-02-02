@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Edit book</title>
+    <title>Book page</title>
 </head>
 <body>
 
@@ -18,16 +18,37 @@
 
 <div th:if="${appUser != null}">
     <p><strong>Книга сейчас у:</strong> <span th:text="${appUser.lastName} + ' ' + ${appUser.firstName}  + ' ' + ${appUser.patronymic}"></span></p>
+
+    <form th:method="PATCH" th:action="@{/books/detach}">
+        <input type="hidden" name="bookId" th:value="${book.id}">
+        <button type="submit">Отвязать</button>
+    </form>
+
 </div>
 
 <div th:if="${appUser == null}">
     <p><strong>Книга сейчас ни за кем не закреплена:</strong></p>
+
+    <form th:method="PATCH" th:action="@{/books/attach}">
+        <label for="personSelector">Выберите кому выдать книгу</label>
+        <select th:object="${emptyUserForSelector}" th:field="*{id} " id="personSelector">
+            <option th:each="emptyUserForSelector : ${usersList}"
+                    th:value="${emptyUserForSelector.getId()}"
+                    th:text="${emptyUserForSelector.getLastName() + ' ' + emptyUserForSelector.getFirstName() + ' ' + emptyUserForSelector.getPatronymic()}">
+            </option>
+        </select>
+
+        <input type="hidden" name="bookId" th:value="${book.id}">
+        <input type="Submit" value="Прикрепить">
+    </form>
 </div>
 
 <!-- Сообщение, если объект Book отсутствует -->
 <div th:if="${book == null}">
     <p>No book details available.</p>
 </div>
+
+<hr/>
 
 <a th:href="@{/books/{id}/edit(id=${book.id})}">
     <button>Редактировать</button>

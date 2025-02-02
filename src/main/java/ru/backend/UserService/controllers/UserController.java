@@ -58,12 +58,6 @@ public class UserController {
         userService.edit(appUser);
         return "redirect:/people";
     }
-//
-//    @DeleteMapping("/{id}")
-//    public String deleteUser(@PathVariable("id") int id){
-//        userService.delete(id);
-//        return "redirect:/users";
-//    }
 
     @GetMapping("/fillUsersDb")
     public String fillUsersTable() {
