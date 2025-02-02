@@ -53,7 +53,7 @@ public class BookController {
         Book book = bookService.getBookById(bookId);
         book.setUserId(null);
         editBook(book);
-        return "redirect:/books";
+        return "redirect:/books/" + bookId;
     }
 
     @PatchMapping("/attach")
@@ -61,7 +61,7 @@ public class BookController {
         Book book = bookService.getBookById(bookId);
         book.setUserId(appUser.getId());
         editBook(book);
-        return "redirect:/books";
+        return "redirect:/books/" + bookId;
     }
 
 
