@@ -10,7 +10,7 @@ public interface BookService {
     void add(Book book);
     void edit(Book book);
     Book getBookById(int id);
-    List<Book> listBooks();
+    List<Book> getBooksList(Integer pageNumber, Integer pageSize, Boolean sortByYearOfBook);
     List<Book> getBooksByUserId(int userId);
 
 }

@@ -19,8 +19,11 @@ public class BookController {
     UserService userService;
 
     @GetMapping()
-    public String getAllBooks(Model model) {
-        model.addAttribute("books", bookService.listBooks());
+    public String getAllBooks(Model model,
+                                 @RequestParam(value = "page", required = false) Integer page,
+                                 @RequestParam(value = "size", required = false) Integer size,
+                                 @RequestParam(value = "sort_by_year", required = false, defaultValue = "false") Boolean sortByYear) {
+        model.addAttribute("books", bookService.getBooksList(page, size, sortByYear));
         return "books/books_table";
     }
 
