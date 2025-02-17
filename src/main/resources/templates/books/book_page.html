@@ -1,57 +1,155 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Book page</title>
+    <title>Информация о книге</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 500px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: auto;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .info {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 16px;
+            margin: 8px 0;
+        }
+
+        strong {
+            color: #555;
+        }
+
+        form {
+            margin-top: 15px;
+        }
+
+        select, input[type="submit"], button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        select {
+            border: 1px solid #ccc;
+            background: white;
+        }
+
+        input[type="submit"], button {
+            background: #007bff;
+            color: white;
+        }
+
+        input[type="submit"]:hover, button:hover {
+            background: #0056b3;
+        }
+
+        .detach-btn {
+            background: #dc3545;
+        }
+
+        .detach-btn:hover {
+            background: #b52b3b;
+        }
+
+        .edit-btn {
+            background: #28a745;
+        }
+
+        .edit-btn:hover {
+            background: #218838;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007BFF;
+            font-size: 16px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
 
-<h1>Информация о книге</h1>
+<div class="container">
+    <h1>Информация о книге</h1>
 
-<!-- Проверка на наличие объекта Book -->
-<div th:if="${book != null}">
-    <p><strong>Book ID:</strong> <span th:text="${book.id}">ID</span></p>
-    <p><strong>Название:</strong> <span th:text="${book.title}">Title</span></p>
-    <p><strong>Автор:</strong> <span th:text="${book.author}">Author</span></p>
-    <p><strong>Год публикации:</strong> <span th:text="${book.year}">Year</span></p>
+    <div class="info" th:if="${book != null}">
+        <p><strong>Book ID:</strong> <span th:text="${book.id}">ID</span></p>
+        <p><strong>Название:</strong> <span th:text="${book.title}">Title</span></p>
+        <p><strong>Автор:</strong> <span th:text="${book.author}">Author</span></p>
+        <p><strong>Год публикации:</strong> <span th:text="${book.year}">Year</span></p>
+    </div>
+
+    <div th:if="${appUser != null}">
+        <p><strong>Книга сейчас у:</strong>
+            <span th:text="${appUser.lastName} + ' ' + ${appUser.firstName}  + ' ' + ${appUser.patronymic}"></span>
+        </p>
+
+        <form th:method="PATCH" th:action="@{/books/detach}">
+            <input type="hidden" name="bookId" th:value="${book.id}">
+            <input type="submit" value="Отвязать" class="detach-btn">
+        </form>
+    </div>
+
+    <div th:if="${appUser == null}">
+        <p><strong>Книга сейчас ни за кем не закреплена:</strong></p>
+
+        <form th:method="PATCH" th:action="@{/books/attach}">
+            <label for="personSelector">Выберите кому выдать книгу:</label>
+            <select th:object="${emptyUserForSelector}" th:field="*{id}" id="personSelector">
+                <option th:each="emptyUserForSelector : ${usersList}"
+                        th:value="${emptyUserForSelector.getId()}"
+                        th:text="${emptyUserForSelector.getLastName() + ' ' + emptyUserForSelector.getFirstName() + ' ' + emptyUserForSelector.getPatronymic()}">
+                </option>
+            </select>
+
+            <input type="hidden" name="bookId" th:value="${book.id}">
+            <input type="submit" value="Прикрепить">
+        </form>
+    </div>
+
+    <div th:if="${book == null}">
+        <p><strong>Книга не найдена</strong></p>
+    </div>
+
+    <hr/>
+
+    <a th:href="@{/books/{id}/edit(id=${book.id})}">
+        <button class="edit-btn">Редактировать</button>
+    </a>
+
+    <a th:href="@{/books}" class="back-link">Вернуться к списку книг</a>
 </div>
 
-<div th:if="${appUser != null}">
-    <p><strong>Книга сейчас у:</strong> <span th:text="${appUser.lastName} + ' ' + ${appUser.firstName}  + ' ' + ${appUser.patronymic}"></span></p>
-
-    <form th:method="PATCH" th:action="@{/books/detach}">
-        <input type="hidden" name="bookId" th:value="${book.id}">
-        <button type="submit">Отвязать</button>
-    </form>
-
-</div>
-
-<div th:if="${appUser == null}">
-    <p><strong>Книга сейчас ни за кем не закреплена:</strong></p>
-
-    <form th:method="PATCH" th:action="@{/books/attach}">
-        <label for="personSelector">Выберите кому выдать книгу</label>
-        <select th:object="${emptyUserForSelector}" th:field="*{id} " id="personSelector">
-            <option th:each="emptyUserForSelector : ${usersList}"
-                    th:value="${emptyUserForSelector.getId()}"
-                    th:text="${emptyUserForSelector.getLastName() + ' ' + emptyUserForSelector.getFirstName() + ' ' + emptyUserForSelector.getPatronymic()}">
-            </option>
-        </select>
-
-        <input type="hidden" name="bookId" th:value="${book.id}">
-        <input type="Submit" value="Прикрепить">
-    </form>
-</div>
-
-<!-- Сообщение, если объект Book отсутствует -->
-<div th:if="${book == null}">
-    <p>No book details available.</p>
-</div>
-
-<hr/>
-
-<a th:href="@{/books/{id}/edit(id=${book.id})}">
-    <button>Редактировать</button>
-</a>
 </body>
 </html>

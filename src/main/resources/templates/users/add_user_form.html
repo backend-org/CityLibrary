@@ -1,24 +1,100 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>New appUser</title>
+    <title>Новый пользователь</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 400px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: auto;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            background: #007BFF;
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background: #0056b3;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #007BFF;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-<form th:method="POST" th:action="@{/people}" th:object="${appUser}">
-    <label for="name">Введите имя:</label>
-    <input type="text" th:field="*{firstName}" id="name">
-    <br/>
-    <label for="secondname">Введите фамилию:</label>
-    <input type="text" th:field="*{lastName}" id="secondname">
-    <br/>
-    <label for="patronymic">Введите отчество:</label>
-    <input type="text" th:field="*{patronymic}" id="patronymic">
-    <br/>
-    <label for="birthYear">Введите год рождения:</label>
-    <input type="text" th:field="*{birthYear}" id="birthYear">
-    <br/>
-    <input type="submit" value="Создать">
-</form>
+
+<div class="container">
+    <h2>Добавить пользователя</h2>
+
+    <form th:method="POST" th:action="@{/people}" th:object="${appUser}">
+        <label for="name">Введите имя:</label>
+        <input type="text" th:field="*{firstName}" id="name" required>
+
+        <label for="secondname">Введите фамилию:</label>
+        <input type="text" th:field="*{lastName}" id="secondname" required>
+
+        <label for="patronymic">Введите отчество:</label>
+        <input type="text" th:field="*{patronymic}" id="patronymic">
+
+        <label for="birthYear">Введите год рождения:</label>
+        <input type="text" th:field="*{birthYear}" id="birthYear" required>
+
+        <input type="submit" value="Создать">
+    </form>
+
+    <a th:href="@{/people}" class="back-link">Вернуться к списку пользователей</a>
+</div>
+
 </body>
 </html>

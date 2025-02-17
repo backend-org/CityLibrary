@@ -1,38 +1,128 @@
 <!DOCTYPE html>
-    <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Пользователь</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            color: #333;
+            text-align: center;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        .user-info {
+            background: #eef;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background: #007BFF;
+            color: white;
+        }
+
+        .expired {
+            color: red;
+            font-weight: bold;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background: #007BFF;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+    </style>
 </head>
 <body>
 
-<h1>Страница пользователя</h1>
+<div class="container">
+    <h1>Страница пользователя</h1>
 
-<!-- Проверка на наличие объекта appUser -->
-<div th:if="${appUser != null}">
-    <p><strong>UserID:</strong> <span th:text="${appUser.id}">ID</span></p>
-    <p><strong>ФИО:</strong> <span th:text="${appUser.firstName} + ' ' + ${appUser.lastName} + ' ' + ${appUser.patronymic}"></span></p>
-    <p><strong>Год рождения:</strong> <span th:text="${appUser.birthYear}">Year</span></p>
+    <!-- Проверка на наличие пользователя -->
+    <div th:if="${appUser != null}" class="user-info">
+        <p><strong>UserID:</strong> <span th:text="${appUser.id}"></span></p>
+        <p><strong>ФИО:</strong> <span th:text="${appUser.firstName} + ' ' + ${appUser.lastName} + ' ' + ${appUser.patronymic}"></span></p>
+        <p><strong>Год рождения:</strong> <span th:text="${appUser.birthYear}"></span></p>
+
+        <a th:href="@{/people/{id}/edit(id=${appUser.id})}" class="btn">Редактировать</a>
+    </div>
+
+    <div th:if="${appUser == null}" class="error">
+        <p>Пользователь с таким ID не найден</p>
+    </div>
+
+    <hr/>
+
+    <h2>Книги в пользовании</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Название</th>
+            <th>Автор</th>
+            <th>Год</th>
+            <th>Статус</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.title}"></td>
+            <td th:text="${book.author}"></td>
+            <td th:text="${book.year}"></td>
+            <td th:text="${book.expired} ? 'Просрочена' : 'В срок'" th:class="${book.expired} ? 'expired' : ''"></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
-
-<a th:href="@{/people/{id}/edit(id=${appUser.id})}">
-    <button>Редактировать</button>
-</a>
-
-<div th:if="${appUser == null}">
-    <p><strong>Пользователя с таким id не обнаружено</strong></p>
-</div>
-
-<hr/>
-
-<h2>Книги в пользовании</h2>
-
-<div th:each="book : ${books}">
-    <p><span th:text="${book.title} + ' | ' + ${book.author} + ' | ' + ${book.year}"
-             th:style="${book.expired} ? 'color: red;' : 'color: black;'"></span></p>
-</div>
-
-<hr/>
 
 </body>
 </html>
-
