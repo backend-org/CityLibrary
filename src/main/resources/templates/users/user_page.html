@@ -27,7 +27,8 @@
 <h2>Книги в пользовании</h2>
 
 <div th:each="book : ${books}">
-    <p><span th:text="${book.title} + ' | ' + ${book.author} + ' | ' + ${book.year}"></span></p>
+    <p><span th:text="${book.title} + ' | ' + ${book.author} + ' | ' + ${book.year}"
+             th:style="${book.expired} ? 'color: red;' : 'color: black;'"></span></p>
 </div>
 
 <hr/>

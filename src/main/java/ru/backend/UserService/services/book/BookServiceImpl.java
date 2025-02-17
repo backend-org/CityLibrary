@@ -9,6 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.backend.UserService.model.Book;
 import ru.backend.UserService.repository.BookRepository;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -39,7 +43,10 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public List<Book> getBooksByUserId(int userId) {
-        return bookRepository.findAllByUserId(userId);
+        return bookRepository.findAllByUserId(userId)
+                .stream()
+                .peek(book -> book.setExpired(checkExpired(book.getDateOfAttach())))
+                .toList();
     }
 
     @Override
@@ -56,5 +63,13 @@ public class BookServiceImpl implements BookService{
     @Override
     public void edit(Book newBook) {
         bookRepository.save(newBook);
+    }
+
+    private boolean checkExpired(Date bookAttachedDate){
+        if(bookAttachedDate == null){
+            return false;
+        }
+        LocalDate attachedLocalDate = bookAttachedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return ChronoUnit.DAYS.between(attachedLocalDate, LocalDate.now()) > 10;
     }
 }

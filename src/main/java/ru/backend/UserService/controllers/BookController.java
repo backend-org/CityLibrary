@@ -9,6 +9,7 @@ import ru.backend.UserService.model.Book;
 import ru.backend.UserService.services.book.BookService;
 import ru.backend.UserService.services.user.UserService;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -57,6 +58,7 @@ public class BookController {
     public String detachBook(@RequestParam("bookId") int bookId) {
         Book book = bookService.getBookById(bookId);
         book.setUserId(null);
+        book.setDateOfAttach(null);
         editBook(book);
         return "redirect:/books/" + bookId;
     }
@@ -65,6 +67,7 @@ public class BookController {
     public String attachBookToUser(@ModelAttribute("attachingUser") AppUser appUser, @RequestParam("bookId") int bookId){
         Book book = bookService.getBookById(bookId);
         book.setUserId(appUser.getId());
+        book.setDateOfAttach(new Date());
         editBook(book);
         return "redirect:/books/" + bookId;
     }
