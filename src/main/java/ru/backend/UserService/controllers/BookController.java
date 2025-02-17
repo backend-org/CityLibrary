@@ -9,6 +9,8 @@ import ru.backend.UserService.model.Book;
 import ru.backend.UserService.services.book.BookService;
 import ru.backend.UserService.services.user.UserService;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("books")
 public class BookController {
@@ -67,7 +69,6 @@ public class BookController {
         return "redirect:/books/" + bookId;
     }
 
-
     @GetMapping("/{id}")
     public String getBookInfo(Model model, @PathVariable int id){
         var book = bookService.getBookById(id);
@@ -83,5 +84,14 @@ public class BookController {
             model.addAttribute("usersList", userService.listUsers());
         }
         return "books/book_page";
+    }
+
+    @GetMapping("/search")
+    public String searchBooks(@RequestParam(required = false) String query, Model model) {
+        List<Book> books = (query == null || query.isBlank()) ? List.of() : bookService.getBooksStartingWith(query);
+        model.addAttribute("books", books);
+        model.addAttribute("query", query);
+        return "books/search";
+
     }
 }

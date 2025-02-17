@@ -43,6 +43,11 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
+    public List<Book> getBooksStartingWith(String query) {
+        return bookRepository.findByTitleStartingWithIgnoreCase(query);
+    }
+
+    @Override
     public Book getBookById(int id) {
         return bookRepository.findById(id).orElse(null);
     }

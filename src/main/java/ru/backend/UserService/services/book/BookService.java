@@ -12,5 +12,6 @@ public interface BookService {
     Book getBookById(int id);
     List<Book> getBooksList(Integer pageNumber, Integer pageSize, Boolean sortByYearOfBook);
     List<Book> getBooksByUserId(int userId);
+    List<Book> getBooksStartingWith(String query);
 
 }
